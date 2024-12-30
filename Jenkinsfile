@@ -2,13 +2,14 @@ pipeline {
     agent any
 
     environment {
-        // Define any necessary environment variables here
+        // Define environment variables if needed
+        PROJECT_NAME = 'my-project'   // Replace with your project name
     }
 
     stages {
         stage('Checkout') {
             steps {
-                // Checkout the code from Git
+                // Checkout the code from the repository
                 checkout scm
             }
         }
@@ -16,8 +17,11 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    // Build your project using PowerShell or batch commands
-                    bat 'echo "Building the project..."' // Replace with actual build command
+                    echo 'Building the project...'
+                    // Replace with your build commands, for example, for Node.js:
+                    // bat 'npm install' 
+                    // If it's a Java project, you can use 'mvn clean install' or similar commands.
+                    sh './build.sh'  // Assuming you have a build script
                 }
             }
         }
@@ -25,8 +29,11 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    // Run your tests using PowerShell or batch commands
-                    bat 'echo "Running tests..."' // Replace with actual test command
+                    echo 'Running tests...'
+                    // Replace with your testing commands
+                    // For Node.js, you might use 'npm test'
+                    // For Java, you could use 'mvn test'
+                    sh './run-tests.sh' // Assuming you have a test script
                 }
             }
         }
@@ -34,8 +41,12 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    // Deploy your project using PowerShell or batch commands
-                    bat 'echo "Deploying the project..."' // Replace with actual deploy command
+                    echo 'Deploying the project...'
+                    // Add deployment steps here
+                    // For example, copying files to a server or using a cloud CLI
+                    // For example:
+                    // sh 'scp -r ./build user@server:/path/to/deploy'
+                    sh './deploy.sh'  // Assuming you have a deploy script
                 }
             }
         }
@@ -43,7 +54,6 @@ pipeline {
 
     post {
         always {
-            // Cleanup or additional post-build steps
             echo 'Pipeline execution complete.'
         }
 
